@@ -12,7 +12,7 @@ def create_empty_board():
     return [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
 
-def tokens_on_board(board):
+def number_of_tokens_on_board(board):
 
     counter = 0
 
@@ -27,40 +27,52 @@ def place_token(board, place, token):
     board[place] = token
 
 
+def next_random_play(board):
+
+    for i in range(8):
+        if board[i] == 0:
+            board[i] = 1
+
+    return board
+
+
+def get_value_of_game_state(state):
+    return state[1]
+
+
 class Agent:
 
     def __init__(self):
 
-        self.states = []
+        self.game_states = []
+        self.previous_game_state_value = 0
 
     def get_next_states(self, tokens_played):
 
-        next_states = []
+        next_game_states = []
 
-        for state in self.states:
+        for game_state in self.game_states:
 
-            if tokens_on_board(state) == tokens_played + 1:
-                next_states.append(state)
+            if number_of_tokens_on_board(game_state) == tokens_played + 1:
+                next_game_states.append(game_state)
 
-        return next_states
-
-    @staticmethod
-    def next_greedy_state(next_states):
-
-        next_greedy_state = [[0], [0]]
-
-        for state in next_states:
-            if state[1] > next_greedy_state[1]:
-                next_greedy_state = state
-
-        return next_greedy_state
+        return next_game_states
 
     @staticmethod
-    def next_random_play(board):
+    def next_greedy_state(next_game_states):
 
-        for i in range(8):
-            if board[i] == 0:
-                return i
+        next_greedy_game_state = [[0], [0]]
+
+        for game_state in next_game_states:
+            if game_state[1] > next_greedy_game_state[1]:
+                next_greedy_game_state = game_state
+
+        return next_greedy_game_state
+
+    def play(self, board):
+
+        return 0
+
 
 
 
