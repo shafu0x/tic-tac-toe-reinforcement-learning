@@ -107,6 +107,15 @@ class Agent:
 
         return next_greedy_game_state[0]
 
+    def display_game_states(self):
+
+        print('********************* {} *********************'.format('States'))
+
+        for i in range(len(self.game_states)):
+            print('State {}: {}'.format(i, self.game_states[i]))
+
+        print('**************************************************')
+
 
 def subtract_list_from_list(list1, list2):
 
@@ -121,3 +130,10 @@ def subtract_list_from_list(list1, list2):
 
     return new_list
 
+a = Agent()
+
+a.add_game_state([[0, 0, 0, 0, 0, 0, 0, 0, 0], [0.5]])
+a.add_game_state([[0, 0, 0, 0, 0, 0, 1, 0, 0], [0.15]])
+a.add_game_state([[0, 0, 0, -1, 0, 0, 0, 0, 0], [0.8]])
+
+a.display_game_states()
