@@ -1,6 +1,6 @@
 import unittest
 from tic_tac_toe_agent import create_empty_board, get_n_of_tokens_on_board,place_token_on_board, get_value_of_game_state, Agent, get_place_of_token_to_get_to_next_state, \
-    subtract_list_from_list, get_empty_places_on_board
+    subtract_list_from_list, get_empty_places_on_board, is_game_won
 
 
 class TestTicTacToeAgentMethods(unittest.TestCase):
@@ -137,5 +137,17 @@ class TestTicTacToeAgentMethods(unittest.TestCase):
 
         self.assertEqual(get_empty_places_on_board(board), [3, 8])
 
+    def test_is_game_won(self):
+
+        board = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+        self.assertEqual(is_game_won(board, 1), False)
+
+        board = [1, 1, 1, 0, 0, 0, 0, 0, 0]
+
+        self.assertEqual(is_game_won(board, 1), True)
+
+
 if __name__ == '__main__':
     unittest.main()
+

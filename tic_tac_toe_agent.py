@@ -1,4 +1,14 @@
+# _____________
+# | 0 | 1 | 2 |
+# _____________
+# | 3 | 4 | 5 |
+# _____________
+# | 6 | 7 | 8 |
+# _____________
+#
+
 from random import randint
+
 
 winning_state = [[[1, 1, 1, 0, 0, 0, 0, 0, 0], [1]],
                  [[0, 0, 0, 1, 1, 1, 0, 0, 0], [1]],
@@ -8,6 +18,25 @@ winning_state = [[[1, 1, 1, 0, 0, 0, 0, 0, 0], [1]],
                  [[1, 0, 0, 1, 0, 0, 1, 0, 0], [1]],
                  [[0, 1, 0, 0, 1, 0, 0, 1, 0], [1]],
                  [[0, 0, 1, 0, 0, 1, 0, 0, 1], [1]]]
+
+winning_sequences = [[0, 1, 2],
+                     [3, 4, 5],
+                     [6, 7, 8],
+                     [0, 3, 9],
+                     [1, 4, 7],
+                     [2, 5, 8],
+                     [0, 4, 8],
+                     [2, 4, 6]]
+
+
+def is_game_won(board, token):
+
+    for winning_sequence in winning_sequences:
+
+        if (board[winning_sequence[0]] and board[winning_sequence[1]] and board[winning_sequence[2]]) is token:
+            return True
+
+    return False
 
 
 def create_empty_board():
@@ -130,10 +159,3 @@ def subtract_list_from_list(list1, list2):
 
     return new_list
 
-a = Agent()
-
-a.add_game_state([[0, 0, 0, 0, 0, 0, 0, 0, 0], [0.5]])
-a.add_game_state([[0, 0, 0, 0, 0, 0, 1, 0, 0], [0.15]])
-a.add_game_state([[0, 0, 0, -1, 0, 0, 0, 0, 0], [0.8]])
-
-a.display_game_states()
