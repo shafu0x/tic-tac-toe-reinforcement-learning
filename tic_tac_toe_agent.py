@@ -23,7 +23,7 @@ winning_state = [[[1, 1, 1, 0, 0, 0, 0, 0, 0], [1]],
 winning_sequences = [[0, 1, 2],
                      [3, 4, 5],
                      [6, 7, 8],
-                     [0, 3, 9],
+                     [0, 3, 6],
                      [1, 4, 7],
                      [2, 5, 8],
                      [0, 4, 8],
@@ -34,7 +34,10 @@ def is_game_won(board, token):
 
     for winning_sequence in winning_sequences:
 
-        if (board[winning_sequence[0]] and board[winning_sequence[1]] and board[winning_sequence[2]]) is token:
+        # if (board[winning_sequence[0]] and board[winning_sequence[1]] and board[winning_sequence[2]]) is token:
+        #     return True
+
+        if board[winning_sequence[0]] == token and board[winning_sequence[1]] == token and board[winning_sequence[2]] == token:
             return True
 
     return False
@@ -43,9 +46,6 @@ def is_game_won(board, token):
 def is_game_drawn(board):
     if get_n_of_tokens_on_board(board) < 9:
         return False
-    if get_n_of_tokens_on_board(board) == 9:
-        if not is_game_won(board, 1) and not is_game_won(board, -1):
-            return False
 
     return True
 
@@ -93,7 +93,9 @@ def get_empty_places_on_board(board):
 def place_token_on_board(board, place, token):
 
     if board[place] == 1 or board[place] == -1:
-        raise Exception
+
+        error = '{} is already occupied with {}'.format(place, token)
+        raise Exception(error)
     else:
         board[place] = token
     return board
@@ -112,7 +114,7 @@ def get_next_random_state(board, token):
     next_random_place = get_next_random_play(board)
     board[next_random_place] = token
 
-    return create_state_from_board(board, 0.5)
+    return create_state_from_board(board, [0.5])
 
 
 def create_new_board(board, place, token):
@@ -180,7 +182,7 @@ class Agent:
             if game_state[1] > next_greedy_game_state[1]:
                 next_greedy_game_state = game_state
 
-        return next_greedy_game_state[0]
+        return next_greedy_game_state
 
     def display_game_states(self):
 
@@ -195,7 +197,7 @@ class Agent:
 
         old_board = list(board)
 
-        if len(self.game_states) == 0 or len(self.get_next_states(get_n_of_tokens_on_board(board), board)) == 0:
+        if self.no_next_state(board):
 
             next_state = get_next_random_state(old_board, 1)
             self.add_game_state(next_state)
@@ -220,6 +222,10 @@ class Agent:
 
             return board
 
+    def no_next_state(self, board):
+
+        return len(self.game_states) == 0 or len(self.get_next_states(get_n_of_tokens_on_board(board), board)) == 0
+
 
 def play():
 
@@ -227,10 +233,33 @@ def play():
 
     agent = Agent()
 
-    agent.play_turn(board)
+    for i in range(200):
 
-    print(display_board(board))
+        agent.play_turn(board)
+        print(display_board(board))
+
+        if is_game_won(board, 1):
+            print(display_board(board))
+            print('-------- X wins --------')
+            board = create_empty_board()
+            print(display_board(board))
+
+        if is_game_drawn(board):
+            print(display_board(board))
+            print('-------- DRAW --------')
+            board = create_empty_board()
+            print(display_board(board))
+
+        place_token_on_board(board, int(input()), -1)
+
+        if is_game_won(board, -1):
+            print(display_board(board))
+            print('-------- O wins --------')
+            board = create_empty_board()
+            print(display_board(board))
 
 
 if __name__ == '__main__':
-    play()
+   play()
+
+
