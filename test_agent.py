@@ -141,3 +141,59 @@ class TestAgent(unittest.TestCase):
 
         self.assertEqual(agent.greedy(board), [[], [0]])
 
+    def test_backprop_state_value(self):
+
+        state1 = [[1, 0, 0, 1, 0, -1, 0, 0, 0], [0.5]]
+        state2 = [[1, 0, 0, 0, 0, 0, 0, 0, 0], [0.75]]
+        state3 = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0.5]]
+        state4 = [[1, 0, 0, 0, 0, -1, 0, 1, 0], [0.8]]
+        state5 = [[0, 0, 0, 1, 0, 0, 0, 0, 0], [0.5]]
+        state6 = [[0, 1, 0, 1, 0, -1, 0, 0, 0], [1]]
+
+        agent = Agent(1)
+        agent.add_state(state1)
+        agent.add_state(state2)
+        agent.add_state(state3)
+        agent.add_state(state4)
+        agent.add_state(state5)
+        agent.add_state(state6)
+
+        self.assertEqual(agent.backprop_state_value(), [0.55])
+        self.assertEqual(agent.states[4], [[0, 0, 0, 1, 0, 0, 0, 0, 0], [0.55]])
+
+        agent = Agent(1)
+
+        state1 = [[0, 0, 0, 1, 0, 0, 0, 0, 0], [0.5]]
+        state2 = [[0, 1, 0, 1, 0, -1, 0, 0, 0], [1]]
+
+        agent.add_state(state1)
+        agent.add_state(state2)
+
+        agent.backprop_state_value()
+
+        self.assertEqual(agent.states[0], [[0, 0, 0, 1, 0, 0, 0, 0, 0], [0.55]])
+
+    def test_update_state(self):
+
+        agent = Agent(1)
+
+        state1 = [[1, 0, 0, 1, 0, -1, 0, 0, 0], [0.5]]
+        state2 = [[1, 0, 0, 0, 0, 0, 0, 0, 0], [0.75]]
+        state3 = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0.5]]
+        state4 = [[1, 0, 0, 0, 0, -1, 0, 1, 0], [0.8]]
+
+        agent.add_state(state1)
+        agent.add_state(state2)
+        agent.add_state(state3)
+        agent.add_state(state4)
+
+        new_state_2 = [[1, 0, 0, 0, 0, 0, 0, 0, 0], [0.75]]
+        new_state_4 = [[1, 0, 0, 0, 0, -1, 0, 1, 0], [0.15]]
+
+        agent.update_state(new_state_2)
+        agent.update_state(new_state_4)
+
+        self.assertEqual(agent.states[1], new_state_2)
+        self.assertEqual(agent.states[3], new_state_4)
+
+
