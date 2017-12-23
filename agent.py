@@ -19,6 +19,7 @@ class Agent:
             self.pre_state = self.current_state
             self.current_state = state
 
+    # null --> []
     def next_states(self, board):
         next_states = []
 
@@ -35,4 +36,13 @@ class Agent:
 
         return next_states
 
+    # null --> [[], [0]]
+    def greedy(self, board):
 
+        next_states = self.next_states(board)
+        greedy = [[], [0]]
+        for state in next_states:
+
+            if state[1][0] > greedy[1][0]:
+                greedy = state
+        return greedy
