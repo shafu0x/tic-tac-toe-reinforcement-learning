@@ -82,3 +82,62 @@ class TestAgent(unittest.TestCase):
         agent.add_state(state2)
 
         self.assertEqual(agent.next_states(board), [[[1, 1, 0, 1, 0, -1, 0, -1, -1], [0.5]]])
+
+        agent = Agent(-1)
+
+        board = [1, 1, 0, 1, 0, -1, 0, -1, 0]
+
+        state1 = [[1, 1, 1, 1, 0, -1, 0, -1, -1], [0.5]]
+        state2 = [[1, 1, 0, 1, 0, -1, 1, -1, 0], [0.75]]
+
+        agent.add_state(state1)
+        agent.add_state(state2)
+
+        self.assertEqual(agent.next_states(board), [])
+
+    def test_greedy(self):
+
+        agent = Agent(1)
+
+        board = [1, 0, 0, 0, 0, -1, 0, 0, 0]
+
+        state1 = [[1, 0, 1, 0, 0, -1, 0, 0, 0], [0.5]]
+        state2 = [[1, 0, 0, 0, 1, -1, 0, 0, 0], [0.95]]
+        state3 = [[1, 1, 0, 0, 0, -1, 0, 0, 0], [0.5]]
+        state4 = [[1, 0, 0, 0, 0, -1, 0, 0, 1], [0.8]]
+
+        agent.add_state(state1)
+        agent.add_state(state2)
+        agent.add_state(state3)
+        agent.add_state(state4)
+
+        self.assertEqual(agent.greedy(board), [[1, 0, 0, 0, 1, -1, 0, 0, 0], [0.95]])
+
+        agent = Agent(-1)
+
+        board = [1, 0, 0, 0, 0, -1, 0, 1, 0]
+
+        state1 = [[1, 0, 0, 0, 0, -1, 0, 1, -1], [0.5]]
+        state2 = [[1, 0, 0, 0, 0, -1, 0, 1, 0], [0.95]]
+        state3 = [[1, 0, 0, -1, 0, -1, 0, 1, 0], [0.75]]
+        state4 = [[1, 0, 0, 0, 0, -1, 0, 1, 0], [0.8]]
+
+        agent.add_state(state1)
+        agent.add_state(state2)
+        agent.add_state(state3)
+        agent.add_state(state4)
+
+        self.assertEqual(agent.greedy(board), [[1, 0, 0, -1, 0, -1, 0, 1, 0], [0.75]])
+
+        agent = Agent(-1)
+
+        board = [1, 1, 0, 1, 0, -1, 0, -1, 0]
+
+        state1 = [[1, 1, 1, 1, 0, -1, 0, -1, -1], [0.5]]
+        state2 = [[1, 1, 0, 1, 0, -1, 1, -1, 0], [0.75]]
+
+        agent.add_state(state1)
+        agent.add_state(state2)
+
+        self.assertEqual(agent.greedy(board), [[], [0]])
+
