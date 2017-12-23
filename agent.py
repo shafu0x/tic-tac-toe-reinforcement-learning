@@ -1,13 +1,14 @@
 # state = [[board], [value]]
-from ttt_agent import n_tokens_on_board
+from ttt_agent import n_tokens_on_board, sub_board_from_board, contains_one, state_all_null_except_one
 
 
 class Agent:
 
-    def __init__(self):
+    def __init__(self, token):
         self.pre_state = []
         self.current_state = []
         self.states = []
+        self.token = token
 
     # if first state is added pre state is []
     def add_state(self, state):
@@ -19,8 +20,19 @@ class Agent:
             self.current_state = state
 
     def next_states(self, board):
+        next_states = []
 
-        # TODO: substract board from each state and look for one -1
+        n_tokens_board = n_tokens_on_board(board)
 
-        pass
+        for state in self.states:
+            sub_board = sub_board_from_board(state[0], board)
+            n_tokens_state = n_tokens_on_board(state[0])
+
+            if contains_one(sub_board, -self.token) \
+                    and state_all_null_except_one(sub_board) \
+                    and n_tokens_state > n_tokens_board:
+                next_states.append(state)
+
+        return next_states
+
 
