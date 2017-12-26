@@ -4,7 +4,7 @@ An agent who learns the game of tic tac toe using reinforcement learning.
 
 ## How it works
 
-An agent is trained by playing against an slightly different agent. The agent collects all states and finds. A state
+An agent is trained by playing against an slightly different agent. The agent collects all new states it finds. A state
 contains a board and a state value.
 
 ```
@@ -19,18 +19,23 @@ If the agent finds states that could be played it chooses the state with the hig
 **greedy** turn. Every once in a while the agent chooses a **random** turn. This is determined by the random factor of
 the agent
 
+The agent keeps track of a previous and current state. After every turn the previous state value is updated with
+following equation:
+
+**new state value = pre state value + (learning rate * (current state value - pre state value))**
+
 ## How to train
 
 In the train file following code can be run.
 All parameters can be altered at the top of the file
 
-'''
+```
 save_states = train()
 trained_agent = TrainedAgent(save_states, 1)
 
 #To play against the agent
 play_human(trained_agent)
-'''
+```
 
 ## Authors
 
