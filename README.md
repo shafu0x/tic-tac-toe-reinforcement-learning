@@ -28,13 +28,13 @@ All parameters can be altered at the top of the file
 save_states = train()
 trained_agent = TrainedAgent(save_states, 1)
 
-** To play against the agent***
+#To play against the agent
 play_human(trained_agent)
 '''
 
 ## Authors
 
-* **Sharif Elfouly** - [PurpleBooth](https://github.com/SharifElfouly)
+* **Sharif Elfouly** - [SharifElfouly](https://github.com/SharifElfouly)
 
 ## License
 
