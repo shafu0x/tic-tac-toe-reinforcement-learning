@@ -1,5 +1,5 @@
 import unittest
-from agent import Agent
+from game import Agent
 
 
 class TestAgent(unittest.TestCase):
@@ -19,18 +19,7 @@ class TestAgent(unittest.TestCase):
         agent.add_state(state4)
         agent.add_state(state5)
 
-        self.assertEqual(len(agent.states), 4)
-        self.assertEqual(agent.current_state, state5)
-        self.assertEqual(agent.pre_state, state4)
-
-        state1 = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0.5]]
-        state2 = [[1, 0, 0, 0, 0, 0, 0, 0, 0], [0.75]]
-
-        agent = Agent(1)
-        agent.add_state(state1)
-        agent.add_state(state2)
-        self.assertEqual(agent.pre_state, state1)
-        self.assertEqual(agent.current_state, state2)
+        self.assertEqual(len(agent.states), 5)
 
     def test_next_states(self):
 
@@ -141,38 +130,23 @@ class TestAgent(unittest.TestCase):
 
         self.assertEqual(agent.greedy(board), [[], [0]])
 
+    # contains randomness
     def test_backprop_state_value(self):
 
-        state1 = [[1, 0, 0, 1, 0, -1, 0, 0, 0], [0.5]]
-        state2 = [[1, 0, 0, 0, 0, 0, 0, 0, 0], [0.75]]
-        state3 = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0.5]]
-        state4 = [[1, 0, 0, 0, 0, -1, 0, 1, 0], [0.8]]
-        state5 = [[0, 0, 0, 1, 0, 0, 0, 0, 0], [0.5]]
-        state6 = [[0, 1, 0, 1, 0, -1, 0, 0, 0], [1]]
+        state1 = [[1, 1, 0, 1, 1, -1, -1, -1, 0], [0.5]]
+        state2 = [[1, 1, 0, 1, 1, -1, -1, -1, 0], [0.7]]
 
         agent = Agent(1)
         agent.add_state(state1)
         agent.add_state(state2)
-        agent.add_state(state3)
-        agent.add_state(state4)
-        agent.add_state(state5)
-        agent.add_state(state6)
 
-        self.assertEqual(agent.backprop_state_value(), [0.55])
-        self.assertEqual(agent.states[4], [[0, 0, 0, 1, 0, 0, 0, 0, 0], [0.55]])
+        board = [1, 1, 0, 1, 0, -1, -1, -1, 0]
 
-        agent = Agent(1)
+        agent.turn(board)
+        self.assertEqual(agent.pre_state[1], [0.7])
+        self.assertEqual(agent.current_state[1], [0.7])
 
-        state1 = [[0, 0, 0, 1, 0, 0, 0, 0, 0], [0.5]]
-        state2 = [[0, 1, 0, 1, 0, -1, 0, 0, 0], [1]]
-
-        agent.add_state(state1)
-        agent.add_state(state2)
-
-        agent.backprop_state_value()
-
-        self.assertEqual(agent.states[0], [[0, 0, 0, 1, 0, 0, 0, 0, 0], [0.55]])
-
+    # not used
     def test_update_state(self):
 
         agent = Agent(1)
@@ -196,4 +170,40 @@ class TestAgent(unittest.TestCase):
         self.assertEqual(agent.states[1], new_state_2)
         self.assertEqual(agent.states[3], new_state_4)
 
+    def test_is_state_in_states(self):
 
+        agent = Agent(1)
+
+        state1 = [[1, 0, 0, 1, 0, -1, 0, 0, 0], [0.5]]
+        state2 = [[1, 0, 0, 0, 0, 0, 0, 0, 0], [0.75]]
+        state3 = [[1, 0, 0, 1, 0, -1, 0, 0, 0], [0.5]]
+        state4 = [[1, 0, 0, 0, 0, -1, 0, 1, 0], [0.8]]
+
+        state5 = [[1, -1, 0, 0, 0, -1, 0, 1, 0], [0.8]]
+
+        agent.add_state(state1)
+        agent.add_state(state2)
+        agent.add_state(state3)
+        agent.add_state(state4)
+
+        self.assertEqual(agent.is_state_in_states(state3), True)
+        self.assertEqual(agent.is_state_in_states(state5), False)
+
+    # contains randomness
+    def test_turn(self):
+
+        agent = Agent(1)
+
+        board = [1, 0, 0, 1, 0, -1, 0, -1, 0]
+
+        state1 = [[1, 1, 0, 1, 0, -1, 0, -1, 0], [0.5]]
+        state2 = [[1, 1, 0, 1, 0, -1, 0, -1, 0], [0.75]]
+        state3 = [[1, 1, 0, 1, 0, -1, 0, -1, 0], [0.95]]
+        state4 = [[1, 1, 0, 1, 0, -1, 0, -1, 0], [0.8]]
+
+        agent.add_state(state1)
+        agent.add_state(state2)
+        agent.add_state(state3)
+        agent.add_state(state4)
+
+        self.assertEqual(agent.turn(board), [1, 1, 0, 1, 0, -1, 0, -1, 0])

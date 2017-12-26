@@ -1,6 +1,6 @@
 import unittest
 
-from board_drawer import display_board
+from game.board_drawer import display_board
 
 
 class TestTTTBoardDrawer(unittest.TestCase):
@@ -14,5 +14,3 @@ class TestTTTBoardDrawer(unittest.TestCase):
         board = [0, 0, 1, -1, -1, 0, 0, 0, -1]
 
         print(display_board(board))
-
-

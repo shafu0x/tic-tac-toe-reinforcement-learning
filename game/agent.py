@@ -1,5 +1,7 @@
 # state = [[board], [value]]
-from ttt_agent import n_tokens_on_board, sub_board_from_board, contains_one, state_all_null_except_one, \
+# TODO: use numpy array
+
+from game.agent_helper import n_tokens_on_board, sub_board_from_board, contains_one, state_all_null_except_one, \
     get_next_random_state, place_to_get_to_state, is_game_won
 from random import randint
 

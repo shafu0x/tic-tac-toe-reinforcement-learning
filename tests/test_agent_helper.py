@@ -1,6 +1,7 @@
 import unittest
-from ttt_agent import create_empty_board, get_n_of_tokens_on_board,place_token_on_board, state_value, Agent, place_to_get_to_state, \
-    sub_board_from_board, empty_places_on_board, is_game_won
+
+from game.agent_helper import create_empty_board, n_tokens_on_board,place_token_on_board, state_value, Agent, place_to_get_to_state, \
+    sub_board_from_board, empty_places_on_board, is_game_won, contains_one, state_all_null_except_one
 
 
 class TestTicTacToeAgentMethods(unittest.TestCase):
@@ -9,10 +10,10 @@ class TestTicTacToeAgentMethods(unittest.TestCase):
         self.assertEqual(create_empty_board(), [0, 0, 0, 0, 0, 0, 0, 0, 0])
 
     def test_get_n_of_tokens_on_board(self):
-        self.assertEqual(get_n_of_tokens_on_board([0, 0, 1, 0, -1, 0, 0, 0, 0]), 2)
-        self.assertEqual(get_n_of_tokens_on_board([-1, 0, 1, 0, -1, 0, -1, 0, -1]), 5)
-        self.assertEqual(get_n_of_tokens_on_board([0, 0, 0, 0, 0, 0, 0, 0, 0]), 0)
-        self.assertEqual(get_n_of_tokens_on_board([1, -1, 1, 1, -1, -1, -1, -1, 1]), 9)
+        self.assertEqual(n_tokens_on_board([0, 0, 1, 0, -1, 0, 0, 0, 0]), 2)
+        self.assertEqual(n_tokens_on_board([-1, 0, 1, 0, -1, 0, -1, 0, -1]), 5)
+        self.assertEqual(n_tokens_on_board([0, 0, 0, 0, 0, 0, 0, 0, 0]), 0)
+        self.assertEqual(n_tokens_on_board([1, -1, 1, 1, -1, -1, -1, -1, 1]), 9)
 
     def test_place_token_on_board(self):
         self.assertEqual(place_token_on_board(create_empty_board(), 0, 1), [1, 0, 0, 0, 0, 0, 0, 0, 0])
@@ -68,13 +69,19 @@ class TestTicTacToeAgentMethods(unittest.TestCase):
                         [[1, 0, 0, -1, 0, 0, 1, 1, -1], [0.98]],
                         [[1, -1, 1, -1, 0, 0, 1, 1, -1], [0.001]]]
 
-        self.assertEqual(agent.get_next_greedy_state(games_states), [1, 0, 0, -1, 0, 0, 1, 1, -1])
+        agent.game_states = games_states
+
+        self.assertEqual(agent.greedy(), [[0, 0, 0, 0, 0, 1, 0, 0, 0], [0.1]])
+
+        agent = Agent()
 
         games_states = [[[0, 0, 0, 0, 0, 0, 0, 0, 0], [0.5]],
                         [[1, 0, 0, 0, 0, 0, 0, 0, 0], [0.75]],
                         [[0, 0, 0, 0, 0, 1, 0, 0, 0], [0.1]]]
 
-        self.assertEqual(agent.get_next_greedy_state(games_states), [1, 0, 0, 0, 0, 0, 0, 0, 0])
+        agent.game_states = games_states
+
+        self.assertEqual(agent.greedy(), [[1, 0, 0, 0, 0, 0, 0, 0, 0], [0.75]])
 
     def test_get_place_of_token_to_get_to_next_state(self):
 
@@ -170,17 +177,6 @@ class TestTicTacToeAgentMethods(unittest.TestCase):
 
         self.assertEqual(agent.game_states[1][1], [0.75])
 
-    # TODO: REMOVE
-    def test_update_previous_game_state_value(self):
-
-        agent = Agent()
-
-        p_game_state = [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0.5]]
-
-        c_game_state = [[0, 0, 0, 1, 0, -1, 0, 0, 0], [1]]
-
-        self.assertEqual(agent.update_previous_game_state_value(p_game_state, c_game_state), [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0.55]])
-
     def test_calculate_new_game_state(self):
 
         agent = Agent()
@@ -189,6 +185,38 @@ class TestTicTacToeAgentMethods(unittest.TestCase):
         agent.current_game_state = [[0, 0, 0, 1, 0, -1, 0, 0, 0], [1]]
 
         self.assertEqual(agent.calculate_new_game_state_value(), [0.55])
+
+    def test_contains_one(self):
+
+        board1 = [1, 0, 0, 0, -1, 0, 0, 0, 1]
+
+        self.assertEqual(contains_one(board1, -1), True)
+
+        board2 = [1, 0, 0, 0, -1, 0, -1, 0, 1]
+
+        self.assertEqual(contains_one(board2, -1), False)
+
+        board3 = [1, 0, 0, 0, 1, 0, 0, 0, 1]
+
+        self.assertEqual(contains_one(board3, -1), False)
+
+        board4 = [-1, 0, -1, 0, -1, 0, 0, 0, 1]
+
+        self.assertEqual(contains_one(board4, 1), True)
+
+    def test_state_all_null_except_one(self):
+
+        state1 = [1, 0, 0, 0, 0, 0, 0, 0, 0]
+
+        self.assertEqual(state_all_null_except_one(state1), True)
+
+        state2 = [1, 0, 0, 0, 0, -1, 0, 0, 0]
+
+        self.assertEqual(state_all_null_except_one(state2), False)
+
+        state3 = [0, 0, 0, 0, 0, 0, 1, 0, 0]
+
+        self.assertEqual(state_all_null_except_one(state3), True)
 
 if __name__ == '__main__':
     unittest.main()
