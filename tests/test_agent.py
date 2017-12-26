@@ -1,5 +1,5 @@
 import unittest
-from game.agent import Agent
+from training.agent import Agent
 
 
 class TestAgent(unittest.TestCase):

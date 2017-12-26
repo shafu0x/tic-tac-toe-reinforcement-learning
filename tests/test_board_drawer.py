@@ -1,6 +1,6 @@
 import unittest
 
-from game.board_drawer import display_board
+from training.board_drawer import display_board
 
 
 class TestTTTBoardDrawer(unittest.TestCase):

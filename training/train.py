@@ -1,6 +1,6 @@
-from game.agent import Agent, TrainedAgent
-from game.agent_helper import create_empty_board, is_game_over, place_token_on_board
-from game.board_drawer import display_board
+from training.agent import Agent, TrainedAgent
+from training.agent_helper import create_empty_board, is_game_over, place_token_on_board
+from training.board_drawer import display_board
 from tools.stopwatch import Stopwatch
 
 # 40000 --> 26min

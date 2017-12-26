@@ -1,7 +1,7 @@
 # state = [[board], [value]]
 # TODO: use numpy array
 
-from game.agent_helper import n_tokens_on_board, sub_board_from_board, contains_one, state_all_null_except_one, \
+from training.agent_helper import n_tokens_on_board, sub_board_from_board, contains_one, state_all_null_except_one, \
     get_next_random_state, place_to_get_to_state, is_game_won
 from random import randint
 
@@ -136,7 +136,6 @@ class TrainedAgent:
                     and state_all_null_except_one(sub_board) \
                     and n_tokens_state > n_tokens_board:
                 next_states.append(state)
-
         return next_states
 
     def greedy(self, board):
