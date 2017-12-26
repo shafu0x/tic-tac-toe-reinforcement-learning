@@ -1,6 +1,6 @@
 # Tic Tac Toe Reinforcement Learning
 
-An agent who learns the game of tic tac toe using reinforcement learning
+An agent who learns the game of tic tac toe using reinforcement learning.
 
 ## How it works
 
@@ -34,7 +34,7 @@ play_human(trained_agent)
 
 ## Authors
 
-* **Sharif Elfouly** - [SharifElfouly](https://github.com/SharifElfouly)
+* [SharifElfouly](https://github.com/SharifElfouly)
 
 ## License
 
