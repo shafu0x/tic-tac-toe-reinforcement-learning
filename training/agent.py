@@ -55,7 +55,6 @@ class Agent:
             self.pre_state[1] = [state_value]
             return self.pre_state[1]
 
-    # not used
     def update_state(self, new_state):
         for state in self.states:
             if state[0] == new_state[0]:
@@ -109,6 +108,10 @@ class Agent:
 
     def is_state_lost_state(self):
         return is_game_won(self.current_state[0], -self.token)
+
+    def reset_both_states(self):
+        self.pre_state = []
+        self.current_state = []
 
 
 class TrainedAgent:
